@@ -12,28 +12,36 @@
 之后各种依赖包：
 
 * 一些必备开发包
+
 <!--lang:shell-->
 	sudo apt-get install python-dev libssl-dev libexpat1-dev libxml2-dev
 
 * 安装OpenJDK（使用Android时要用到）
+
 <!--lang:shell-->
 	sudo apt-get install openjdk-7-jdk
 * 安装libpcap-dev（跟踪和记录数据包的）
+
 <!--lang:shell-->
 	sudo apt-get install libpcap-dev
 * 安装athena-jot（输出数据用的）
+
 <!--lang:shell-->
 	sudo apt-get install athena-jot
 * 安装ant（类似于make的编译工具（针对Java））
+
 <!--lang:shell-->
 	sudo apt-get install ant
 * 安装libecryptfs0 （加密文件系统，CCNx很重视对内容的加密保护）
+
 <!--lang:shell-->
 	sudo apt-get install libecryptfs0
 * 安装了automake（用来产生GNU标准的Makefiles）
+
 <!--lang:shell-->
 	sudo apt-get install automake
 * 安装gawk（一种模式扫描和处理的语言）
+
 <!--lang:shell-->
 	sudo apt-get install gawk
 
