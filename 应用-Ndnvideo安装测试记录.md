@@ -81,3 +81,5 @@ Ubuntu安装命令：
 直接拷贝下来：
 <!--lang:shell-->
 	git clone https://github.com/remap/ndnvideo.git
+
+##运行

@@ -1,4 +1,5 @@
 #CCNx常用命令
+记录CCNx版本为0.8.2
 ##ccndstart
 启动ccnd
 
@@ -67,6 +68,37 @@
 默认情况下执行 `ccnr` 命令会在当前目录下生成以下一个文件夹和三个文件： `index` 、 `ccnx_repository_keystore` 、 `repoFile1`
 、 `repoPolicy`
 
-可以使用 `ccnr -h` 命令查看仓库设置的一些环境变量参数，其中有设置仓库位置的 `CCNR_DIRECTORY` 变量
+可以使用 `ccnr -h` 命令查看仓库设置的一些环境变量参数，其中有设置仓库位置的 `CCNR_DIRECTORY` 变量。设置环境变量可以通过修改 `~/.profile`（注意：只有先启动 `ccnr` 命令后再使用 `ccnr -h`才能看到已经修改配置的环境参数）
 
-##
+我的 `.profile` 文件配置如图：
+
+![](./pic/CCNx_usage1.png)
+
+##ccnputfile
+将文件放到CCN仓库中（前提是已经打开了ccnd，建立了本地的仓库）。可以使用 `ccnputfile -h` 查看如何使用
+
+最简单用法： `ccnputflie ccnx:/test/1.mp4 ~/CCN/testfile/1.mp4` 即后面两个参数一个为ccnx中的名字，一个为现在文件系统中的位置。如果执行成功会显示： `Inserted file ...`如图：
+
+![](./pic/CCNx_usage2.png)
+
+##ccnexplore
+一个GUI的文件浏览程序，目前还存在很多bug。直接运行效果如图：
+
+![](./pic/CCNx_usage3.png)
+
+##ccnnamelist
+列出给定仓库存储内容的名字：
+示例：
+<!--lang:-->
+	ccnnamelist $CCNR_DIRECTORY/repoFile1 | less
+
+效果：
+
+![](./pic/CCNx_usage4.png)
+
+##其它
+* `ccnrpolicyedit` 修改ccnr中数据块命名策略，更多参考CCNx `doc/technical/RepoPolicies.html`
+* `ccnls`
+* `ccnlsrepo`
+* `ccngetfile`
+* ...
