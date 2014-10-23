@@ -83,3 +83,8 @@ Ubuntu安装命令：
 	git clone https://github.com/remap/ndnvideo.git
 
 ##运行
+遇到的问题：
+
+![](./pic/problem1.png)
+
+![](./pic/problem2.png)
