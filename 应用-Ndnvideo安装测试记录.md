@@ -1,0 +1,83 @@
+#NDNvideo安装测试记录
+NDNvideo是一个发布和播放在线视频的基于NDN的工具。代码地址：[https://github.com/remap/ndnvideo](https://github.com/remap/ndnvideo)
+##安装
+该工具是基于CCNx的，采用python编写的，所以需要安装CCnx、PyCCN，以及流媒体捕获传输的工具gstreamer
+
+官方这样描述：
+> Dependencies & installing:
+> 
+> - ccnx (includes ccnr)
+>   If you plan streaming and ccnr crashes when it reaches size around 2GB
+>   create file csrc/conf/local.mk with:
+>   PLATCFLAGS= -O2 -D_FILE_OFFSET_BITS=64 -fPIC
+> 
+> - pyccn (git://github.com/remap/PyCCN.git)
+> - ndnvideo (play_latest branch - git://github.com/remap/ndnvideo.git)
+> 
+> - gstreamer 0.10 - will NOT WORK with 1.0... must restrict packages to 0.10 for ndnvideo compatibilty. 
+
+CCNx安装这里不再详细介绍
+
+###PyCCN
+基于CCNx的python中间件，为上层应用提供python接口
+
+源代码地址：[https://github.com/named-data/PyCCN](https://github.com/named-data/PyCCN)
+
+<!--lang:shell-->
+	git clone https://github.com/named-data/PyCCN.git
+	cd PyCCN
+	./bootstrap
+
+安装需求：
+
+> - GNU automake 1.11
+> - GNU libtool (not sure of minimum version, using 2.2.6b)
+> - CCNx 0.4+
+> - OpenSSL (need to be linked to the same version used by libccn
+> - Python 2.7+ (tested with 2.7.0 and 3.2.1)
+
+然后编译安装
+<!--lang:shell-->
+	./configure
+	make
+	#可以尝试执行make check
+	make install
+
+###gstreamer
+支持流媒体捕获和传输的包
+
+Ubuntu安装命令：
+<!--lang:shell-->
+	sudo apt-get update
+	sudo apt-get install gstreamer0.10-plugins-ugly python-gst0.10-dev gstreamer0.10-ffmpeg
+
+注意：如果提示没有相应的包，可以添加源地址：
+
+用编辑器打开 `/etc/apt/sources.list`，在末尾添加以下内容（北邮的镜像）：
+
+	deb ftp://openware.byr.edu.cn/pub/mirror/ubuntu/ precise main multiverse restricted universe
+	deb ftp://openware.byr.edu.cn/pub/mirror/ubuntu/ precise-backports main multiverse restricted universe
+	deb ftp://openware.byr.edu.cn/pub/mirror/ubuntu/ precise-proposed main multiverse restricted universe
+	deb ftp://openware.byr.edu.cn/pub/mirror/ubuntu/ precise-security main multiverse restricted universe
+	deb ftp://openware.byr.edu.cn/pub/mirror/ubuntu/ precise-updates main multiverse restricted universe
+
+之后重新执行上述安装命令。
+
+安装完毕简单测试：
+<!--lang:shell-->
+	gst-launch-0.10 videotestsrc ! ximagesink
+	gst-launch-0.10 v4l2src ! ximagesink
+	gst-launch-0.10 v4l2src ! x264enc ! ffdec_h264 ! ximagesink
+	#注意：v4l2中是字母l不是数字1
+注意，下面两条命令需要有音视频捕获设备才能正确执行
+
+此外python库：
+<!--lang:shell-->
+	python
+	import pygst
+如果没有提示出错就表明安装成功
+
+###NDNvideo
+直接拷贝下来：
+<!--lang:shell-->
+	git clone https://github.com/remap/ndnvideo.git
