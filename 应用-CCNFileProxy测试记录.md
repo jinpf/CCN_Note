@@ -24,18 +24,16 @@ ccnFileProxy是CCNx中文件代理服务器的例子，提供一种类似共享�
 * 都启动ccnd： `ccndstart`
 * 不同之处：添加路由转发信息：
 <!--lang:shell-->
-	# A机添加到B机通信的转发表项（如）：
+	#A机添加到B机通信的转发表项（如）：
 	ccndc  add ccnx:/jinpf.file udp 10.0.2.4（B机IP）
-	# B机添加到A机通信的转发表项（如）：
+	#B机添加到A机通信的转发表项（如）：
 	ccndc  add ccnx:/jinpf.file udp 10.0.2.15（A机IP）
-	
 	#添加结果可以通过ccndstatus命令查看
 * 之后同单机版，A机打开文件代理，B机打开文件浏览器：
 <!--lang:shell-->
 	#A机执行：
 	ccnfileproxy /home/jinpf/CCN/testfile ccnx:/jinpf.file
 	#其中中间部分是要共享的目录位置，后面部分是在ccn网络中的地址，如果不填默认为ccnx:/
-
 	#B机执行：
 	ccnexplore -root ccnx:/jinpf.file
 	#其中-root后面跟要显示的文件地址，如果默认是ccnx:/则不用填

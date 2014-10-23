@@ -12,11 +12,10 @@
 	ccndstart
 ###在两台电脑上分别用ccndc命令添加ccnd转发表项：
 <!--lang:shell-->
-	# A机添加到B机通信的转发表项（如）：
+	#A机添加到B机通信的转发表项（如）：
 	ccndc  add ccnx:/jinpf.chat udp 10.0.2.4（B机IP）
-	# B机添加到A机通信的转发表项（如）：
+	#B机添加到A机通信的转发表项（如）：
 	ccndc  add ccnx:/jinpf.chat udp 10.0.2.15（A机IP）
-	
 	#添加结果可以通过ccndstatus命令查看
 
 ###分别启动聊天程序进行聊天
