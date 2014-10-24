@@ -83,8 +83,31 @@ Ubuntu安装命令：
 	git clone https://github.com/remap/ndnvideo.git
 
 ##运行
+首先设置环境变量，修改 `~/.profile`，在文件末尾加上：
+
+![](./pic/CCNx_usage1.png)
+
+运行CCN环境：
+<!--lang:shell-->
+	source ~/.profile
+	ccndstart
+	ccnr &
+
+发布视频：
+首先进入到 `ndnvideo/videostreaming/` 下执行：
+<!--lang:shell-->
+	./ccn_launch.py filesrc location=/home/jinpf/1.mp4 ! typefind ! qtdemux name=mux \
+	mux.video_00 ! queue ! VideoSink location=/jinpf/video/video \
+	mux.audio_00 ! queue ! AudioSink location=/jinpf/video/audio
+	#另开一个终端，观看视频，将运行结果输出到video_log中
+	./play.py /jinpf | tee video_log
+
 遇到的问题：
 
+视频可以正常发布：
+输入 `ccnexplore` 显示如下：
 ![](./pic/problem1.png)
+
+但是开启播放器显示如下：
 
 ![](./pic/problem2.png)
