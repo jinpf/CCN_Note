@@ -63,13 +63,24 @@ Ubuntu安装命令：
 
 之后重新执行上述安装命令。
 
-安装完毕简单测试：
+关于gstreamer安装完毕简单测试（官方要求）：
 <!--lang:shell-->
 	gst-launch-0.10 videotestsrc ! ximagesink
 	gst-launch-0.10 v4l2src ! ximagesink
 	gst-launch-0.10 v4l2src ! x264enc ! ffdec_h264 ! ximagesink
 	#注意：v4l2中是字母l不是数字1
-注意，下面两条命令需要有音视频捕获设备才能正确执行
+**注意**，下面两条命令需要有音视频捕获设备才能正确执行。此外，因为 `ximagesink` 和 `xvimagesink` 所支持制式有所不同，直接使用 `gst-launch-0.10 v4l2src ! ximagesink` 会出现如 `Could not negotiate format` 错误，而如果在虚拟机中使用因为没有硬件加速故使用后者会出现 `Could not initialise Xv output`。经我个人测试，以下命令可以调用摄像头：
+
+<!--lang:shell-->
+	# 该命令在真机、虚机均可运行
+	gst-launch-0.10 v4l2src ! ffmpegcolorspace ! ximagesink
+	# 真机可以运行命令（实验室开会用笔记本测试）
+	gst-launch-0.10 v4l2src ! xvimagesink
+	gst-launch-0.10 v4l2src ! ffmpegcolorspace ! xvimagesink
+	## 以下命令因为要对视频源进行编码再解密，因此反映会慢很多
+	gst-launch-0.10 v4l2src ! x264enc ! ffdec_h264 ! xvimagesink 
+
+*关于上面命令的含义详细可参考博客：[http://blog.csdn.net/android_lee/article/details/6787977](http://blog.csdn.net/android_lee/article/details/6787977)*
 
 此外python库：
 <!--lang:shell-->
