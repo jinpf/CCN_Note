@@ -104,21 +104,45 @@ Ubuntu安装命令：
 	ccndstart
 	ccnr &
 
+###本地视频
+因为在虚拟机中进行测试，没有相关硬件视频加速能力等，更改 `ndnvideo/videostreaming/video_src.py` 中相关代码（ `./play.py` 中调用，更改时注意备份）：
+
+![](./pic/ndnvideo1.png)
+
+原 `xvimagesink` 改为 `ximagesink`
+
+更改 `ndnvideo/videostreaming/utils.py` 为以下：
+
+![](./pic/ndnvideo2.png)
+
+
 发布视频：
 首先进入到 `ndnvideo/videostreaming/` 下执行：
 <!--lang:shell-->
 	./ccn_launch.py filesrc location=/home/jinpf/1.mp4 ! typefind ! qtdemux name=mux \
 	mux.video_00 ! queue ! VideoSink location=/jinpf/video/video \
 	mux.audio_00 ! queue ! AudioSink location=/jinpf/video/audio
+	
+输入 `ccnexplore &` 显示如下：
+
+![](./pic/problem1.png)
+
+
+播放视频：
+<!--lang:shell-->
 	#另开一个终端，观看视频，将运行结果输出到video_log中
 	./play.py /jinpf | tee video_log
 
-遇到的问题：
+播放成功：
 
-视频可以正常发布：
-输入 `ccnexplore` 显示如下：
-![](./pic/problem1.png)
+![](./pic/ndnvideo3.png)
 
-但是开启播放器显示如下：
+####问题：
 
-![](./pic/problem2.png)
+下面数据显示超时重传次数很多，多次出现进度条回退到0的现象，同时拖拽进度条不太流畅。
+
+![](./pic/problem3.png)
+
+此外，并不是所有视频都能够播放成功，目前经测试，有视频发布成功但是播放不成功。
+
+![](./pic/problem4.png)
