@@ -71,16 +71,22 @@ Ubuntu安装命令：
 	#注意：v4l2中是字母l不是数字1
 **注意**，下面两条命令需要有音视频捕获设备才能正确执行。此外，因为 `ximagesink` 和 `xvimagesink` 所支持制式有所不同，直接使用 `gst-launch-0.10 v4l2src ! ximagesink` 会出现如 `Could not negotiate format` 错误，而如果在虚拟机中使用因为没有硬件加速故使用后者会出现 `Could not initialise Xv output`。经我个人测试，以下命令可以调用摄像头：
 
+以下命令在真机、虚机均可运行
 <!--lang:shell-->
-	# 该命令在真机、虚机均可运行
+	# 推荐可用
 	gst-launch-0.10 v4l2src ! ffmpegcolorspace ! ximagesink
-	# 真机可以运行命令（实验室开会用笔记本测试）
+	gst-launch-0.10 v4l2src ! 'video/x-raw-yuv,width=400,height=300,format=(fourcc)YUY2;video/x-raw-yuv,format=(fourcc)YV12' ! ffmpegcolorspace ! ximagesink	
+	# 比例会失真
+	gst-launch-0.10 v4l2src ! videoscale ！ 'video/x-raw-yuv,width=400,height=300 ! ffmpegcolorspace ! ximagesink
+	
+真机可以运行命令（实验室开会用笔记本测试）
+<!--lang:shell-->
 	gst-launch-0.10 v4l2src ! xvimagesink
 	gst-launch-0.10 v4l2src ! ffmpegcolorspace ! xvimagesink
 	## 以下命令因为要对视频源进行编码再解密，因此反映会慢很多
 	gst-launch-0.10 v4l2src ! x264enc ! ffdec_h264 ! xvimagesink 
 
-*关于上面命令的含义详细可参考博客：[http://blog.csdn.net/android_lee/article/details/6787977](http://blog.csdn.net/android_lee/article/details/6787977)*
+*关于上面命令的含义详细可参考博客：【1】[http://blog.csdn.net/android_lee/article/details/6787977](http://blog.csdn.net/android_lee/article/details/6787977) 【2】[http://blog.csdn.net/sakulafly/article/details/21748777](http://blog.csdn.net/sakulafly/article/details/21748777)*
 
 此外python库：
 <!--lang:shell-->
@@ -143,6 +149,38 @@ Ubuntu安装命令：
 
 ![](./pic/problem3.png)
 
-此外，并不是所有视频都能够播放成功，目前经测试，有视频发布成功但是播放不成功。
+此外，并不是所有视频都能够播放成功，目前经测试，有视频发布成功但是播放不成功。从其提示推断应该和gstreamer有关。（关于gstreamer，我并没有太多掌握，如果有时间需要系统学习）
 
 ![](./pic/problem4.png)
+
+###实时视频
+需要保证摄像头可以使用。同时修改源代码 `ndnvideo/videostreaming/video_sink.py` :
+
+![](./pic/ndnvideo4.png)
+
+**如果之前运行过本地视频或者怕repo中存在同名文件影响后来实验可执行：**
+<!--lang:shell-->
+	#关闭之前CCN相关程序
+	ccndstop
+	cd $CCNR_DIRECTORY
+	rm -r *
+	ccndstart
+	ccnr &
+
+发布视频：
+<!--lang:shell-->
+	cd ndnvideo/videostreaming/
+	# 一个终端发布视频：
+	./video_sink.py /jinpf/streaminfo/video
+	# 另一个终端发布音频：
+	./audio_sink.py /jinpf/streaminfo/audio
+
+![](./pic/ndnvideo5.png)
+
+播放视频：
+<!--lang:shell-->
+	./play.py /jinpf
+
+![](./pic/ndnvideo6.png)
+
+播放器端进度条可以拖拽到以前的画面
