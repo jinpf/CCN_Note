@@ -1,5 +1,5 @@
 #ccndc simple usage
-Command `ccndc` can be used to configure FIB and routing strategy. Use cmd `ccndc -h` can see it\`s usage.
+Command `ccndc` can be used to configure FIB and routing strategy. Use cmd `ccndc -h` for it\`s detail usage.
 
 To create a UDP or TCP tunnel to remote ccnd and create route toward it, use the following command :
 <!--lang:shell-->
